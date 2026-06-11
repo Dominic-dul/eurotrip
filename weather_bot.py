@@ -93,6 +93,8 @@ class RegionForecast:
     dates: list[str]
     rain_prob: list[Optional[float]]   # daily max precipitation probability, %
     precip_sum: list[Optional[float]]  # daily precipitation total, mm
+    temp_max: list[Optional[float]]    # daily max 2m temperature, C
+    temp_min: list[Optional[float]]    # daily min 2m temperature, C
 
     @property
     def avg_rain_prob(self) -> float:
@@ -116,7 +118,8 @@ def fetch_region(region: Region, start: str, end: str,
     params = {
         "latitude": region.lat,
         "longitude": region.lon,
-        "daily": "precipitation_probability_max,precipitation_sum",
+        "daily": ("precipitation_probability_max,precipitation_sum,"
+                  "temperature_2m_max,temperature_2m_min"),
         "timezone": "auto",
         "start_date": start,
         "end_date": end,
@@ -133,6 +136,8 @@ def fetch_region(region: Region, start: str, end: str,
                 dates=daily.get("time", []),
                 rain_prob=daily.get("precipitation_probability_max", []),
                 precip_sum=daily.get("precipitation_sum", []),
+                temp_max=daily.get("temperature_2m_max", []),
+                temp_min=daily.get("temperature_2m_min", []),
             )
         except (requests.RequestException, ValueError) as exc:
             last_err = exc
@@ -151,6 +156,8 @@ class DayPick:
     region: Region
     rain_prob: Optional[float]
     precip: Optional[float]
+    temp_max: Optional[float]
+    temp_min: Optional[float]
 
 
 def daily_rankings(forecasts: list[RegionForecast]) -> list[tuple[str, list[DayPick]]]:
@@ -164,9 +171,12 @@ def daily_rankings(forecasts: list[RegionForecast]) -> list[tuple[str, list[DayP
         for i, date in enumerate(f.dates):
             prob = f.rain_prob[i] if i < len(f.rain_prob) else None
             precip = f.precip_sum[i] if i < len(f.precip_sum) else None
+            tmax = f.temp_max[i] if i < len(f.temp_max) else None
+            tmin = f.temp_min[i] if i < len(f.temp_min) else None
             if prob is None:
                 continue  # can't rank a day we have no probability for
-            by_date.setdefault(date, []).append(DayPick(f.region, prob, precip))
+            by_date.setdefault(date, []).append(
+                DayPick(f.region, prob, precip, tmax, tmin))
 
     result: list[tuple[str, list[DayPick]]] = []
     for date in sorted(by_date):
@@ -205,6 +215,10 @@ def build_message(ranked: list[RegionForecast], start: str, end: str) -> str:
         line = f"*{day}*  ->  {best.region.label}  _{best.rain_prob:.0f}%_"
         if best.precip is not None:
             line += f", {best.precip:.1f} mm"
+        if best.temp_max is not None and best.temp_min is not None:
+            line += f", {best.temp_min:.0f}-{best.temp_max:.0f}C"
+        elif best.temp_max is not None:
+            line += f", {best.temp_max:.0f}C"
         lines.append(line)
         if len(picks) > 1:
             alt = picks[1]
