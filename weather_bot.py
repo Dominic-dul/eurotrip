@@ -57,21 +57,33 @@ class Region:
 # A spread of cities across the three countries. Add/remove freely.
 REGIONS: list[Region] = [
     # Lithuania
-    Region("Vilnius", "LT", 54.6872, 25.2797),
-    Region("Kaunas", "LT", 54.8985, 23.9036),
-    Region("Klaipeda", "LT", 55.7033, 21.1443),
-    Region("Siauliai", "LT", 55.9333, 23.3167),
+    Region("Vilnius", "LT", 54.6872, 25.2797),     # southeast
+    Region("Kaunas", "LT", 54.8985, 23.9036),      # center
+    Region("Klaipeda", "LT", 55.7033, 21.1443),    # west coast
+    Region("Siauliai", "LT", 55.9333, 23.3167),    # north
+    Region("Panevezys", "LT", 55.7333, 24.3500),   # north-central
+    Region("Alytus", "LT", 54.3964, 24.0458),      # south
+    Region("Utena", "LT", 55.4975, 25.6036),       # east
     # Latvia
-    Region("Riga", "LV", 56.9496, 24.1052),
-    Region("Daugavpils", "LV", 55.8714, 26.5161),
-    Region("Liepaja", "LV", 56.5047, 21.0108),
-    Region("Ventspils", "LV", 57.3894, 21.5606),
+    Region("Riga", "LV", 56.9496, 24.1052),        # center
+    Region("Ventspils", "LV", 57.3894, 21.5606),   # northwest coast
+    Region("Liepaja", "LV", 56.5047, 21.0108),     # southwest coast
+    Region("Jelgava", "LV", 56.6500, 23.7128),     # south-central
+    Region("Daugavpils", "LV", 55.8714, 26.5161),  # southeast
+    Region("Rezekne", "LV", 56.5100, 27.3331),     # east
+    Region("Valmiera", "LV", 57.5385, 25.4267),    # northeast
     # Poland
-    Region("Warsaw", "PL", 52.2297, 21.0122),
-    Region("Krakow", "PL", 50.0647, 19.9450),
-    Region("Gdansk", "PL", 54.3520, 18.6466),
-    Region("Wroclaw", "PL", 51.1079, 17.0385),
-    Region("Poznan", "PL", 52.4064, 16.9252),
+    Region("Warsaw", "PL", 52.2297, 21.0122),      # central-east
+    Region("Lodz", "PL", 51.7592, 19.4560),        # center
+    Region("Gdansk", "PL", 54.3520, 18.6466),      # north coast
+    Region("Szczecin", "PL", 53.4285, 14.5528),    # northwest
+    Region("Olsztyn", "PL", 53.7784, 20.4801),     # north
+    Region("Bialystok", "PL", 53.1325, 23.1688),   # northeast
+    Region("Poznan", "PL", 52.4064, 16.9252),      # west
+    Region("Lublin", "PL", 51.2465, 22.5684),      # east
+    Region("Wroclaw", "PL", 51.1079, 17.0385),     # southwest
+    Region("Krakow", "PL", 50.0647, 19.9450),      # south
+    Region("Rzeszow", "PL", 50.0413, 21.9990),     # southeast
 ]
 
 

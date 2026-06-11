@@ -1,11 +1,11 @@
 name: weather-bot
 
-# Runs daily at 06:00 UTC and can be triggered by hand.
+# Runs every 3 hours and can be triggered by hand.
 # Before 16 days out from START_DATE the script exits cleanly (nothing to forecast);
 # once the window is in range it posts the driest region to Telegram.
 on:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "0 */3 * * *"
   workflow_dispatch:        # lets you run it manually from the Actions tab
 
 jobs:
